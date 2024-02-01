@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import './App.css'
 import Articulos from './componentes/Articulos';
 import BarraBusqueda from './componentes/BarraBusqueda';
 import Tabla from './componentes/Tabla';
+import Cesta from './componentes/Cesta';
 
 function App() {
+
 
   const articulos= [
     { codigo: 1, nombre: "Laptop", precio: 800, unidades: 10 },
@@ -27,10 +30,15 @@ function App() {
     { codigo: 19, nombre: "Auriculares", precio: 55, unidades: 28 },
     { codigo: 20, nombre: "Silla Gaming", precio: 120, unidades: 15 }
   ];
-  
+
+  const[articulosCesta,setArticulosCesta]= useState([])
+  const[articulosDisponibles, setArticulosDisponibles] = useState(articulos)
+
   return (
     <>
-      <Tabla articulos={articulos}/>
+      <Cesta articulosCesta={articulosCesta}/>
+      <Tabla setArticulosCesta={setArticulosCesta} articul
+      osCesta={articulosCesta} articulosDisponibles={articulosDisponibles} setArticulosDisponibles={setArticulosDisponibles}/>
     </>
   )
 }
