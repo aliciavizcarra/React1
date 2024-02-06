@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import './App.css'
+import { useEffect, useState } from "react";
 import Articulos from './componentes/Articulos';
 import BarraBusqueda from './componentes/BarraBusqueda';
 import Tabla from './componentes/Tabla';
@@ -7,38 +6,37 @@ import Cesta from './componentes/Cesta';
 
 function App() {
 
+  const URL_SERVER="http://3.92.168.139:3000/"
 
-  const articulos= [
-    { codigo: 1, nombre: "Laptop", precio: 800, unidades: 10 },
-    { codigo: 2, nombre: "Teclado", precio: 50, unidades: 50 },
-    { codigo: 3, nombre: "Mouse", precio: 20, unidades: 30 },
-    { codigo: 4, nombre: "Monitor", precio: 200, unidades: 15 },
-    { codigo: 5, nombre: "Disco Duro", precio: 100, unidades: 25 },
-    { codigo: 6, nombre: "Memoria RAM", precio: 80, unidades: 40 },
-    { codigo: 7, nombre: "Impresora", precio: 150, unidades: 12 },
-    { codigo: 8, nombre: "Router", precio: 60, unidades: 20 },
-    { codigo: 9, nombre: "Tarjeta Gráfica", precio: 250, unidades: 8 },
-    { codigo: 10, nombre: "Cámara Web", precio: 30, unidades: 18 },
-    { codigo: 11, nombre: "Altavoces", precio: 40, unidades: 22 },
-    { codigo: 12, nombre: "Micrófono", precio: 25, unidades: 35 },
-    { codigo: 13, nombre: "Software", precio: 120, unidades: 15 },
-    { codigo: 14, nombre: "Cable HDMI", precio: 10, unidades: 60 },
-    { codigo: 15, nombre: "Fuente de Poder", precio: 45, unidades: 25 },
-    { codigo: 16, nombre: "Tarjeta Madre", precio: 180, unidades: 10 },
-    { codigo: 17, nombre: "Tablet", precio: 150, unidades: 18 },
-    { codigo: 18, nombre: "Batería Portátil", precio: 35, unidades: 30 },
-    { codigo: 19, nombre: "Auriculares", precio: 55, unidades: 28 },
-    { codigo: 20, nombre: "Silla Gaming", precio: 120, unidades: 15 }
-  ];
+  const[filterText,setFilterText] = useState("");
 
+    useEffect(()=>{
+
+        fetch(URL_SERVER+`articulos?nombre_like=${filterText}`)
+        .then(response=>{
+            if(response.ok){
+                return response.json();
+            }else{
+                throw new Error (response.status);
+            }
+        })
+        .then((data)=>{
+            setArticulosDisponibles(data);
+        })
+        .catch(error=>{
+            console.log(error)
+        })
+
+    }, [filterText])
+  
   const[articulosCesta,setArticulosCesta]= useState([])
-  const[articulosDisponibles, setArticulosDisponibles] = useState(articulos)
+  const[articulosDisponibles, setArticulosDisponibles] = useState([])
 
   return (
     <>
-      <Cesta articulosCesta={articulosCesta}/>
-      <Tabla setArticulosCesta={setArticulosCesta} articul
-      osCesta={articulosCesta} articulosDisponibles={articulosDisponibles} setArticulosDisponibles={setArticulosDisponibles}/>
+      <Cesta articulosCesta={articulosCesta} setArticulosCesta={setArticulosCesta} setArticulosDisponibles={setArticulosDisponibles} articulosDisponibles={articulosDisponibles}/>
+      <Tabla setArticulosCesta={setArticulosCesta} 
+      articulosCesta={articulosCesta} articulosDisponibles={articulosDisponibles} setArticulosDisponibles={setArticulosDisponibles} filterText={filterText} setFilterText={setFilterText}/>
     </>
   )
 }

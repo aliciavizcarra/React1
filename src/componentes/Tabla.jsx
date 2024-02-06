@@ -1,11 +1,9 @@
-import { useState } from "react";
 import Articulos from "./Articulos";
 import BarraBusqueda from "./BarraBusqueda";
 
-export default function Tabla({setArticulosCesta,articulosCesta, articulosDisponibles, setArticulosDisponibles}){
+export default function Tabla({setArticulosCesta,articulosCesta, articulosDisponibles, setArticulosDisponibles, filterText, setFilterText}){
 
-    const[filterText,setFilterText] = useState("");
-
+    
     return(
         <>
         <BarraBusqueda filterText={filterText} setFilterText={setFilterText}/>

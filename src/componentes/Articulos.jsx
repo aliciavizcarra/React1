@@ -1,13 +1,22 @@
 import BarraBusqueda from "./BarraBusqueda";
 
-export default function Articulos({articulosDisponibles, filterText, setArticulosCesta, setArticulosDisponibles}){
+export default function Articulos({articulosDisponibles, filterText, setArticulosCesta, setArticulosDisponibles, articulosCesta}){
+
 
     const agregarArticulo = (articulo)=>{
 
+        const articuloBuscado = articulosCesta.find(element => {
+                return element.id === articulo.id 
+        });
+
+        if(articuloBuscado){
+            
+        }
+
         const articuloCesta={
-            codigo: articulo.codigo,
+            id: articulo.id,
             nombre: articulo.nombre,
-            precio: articulo.precio
+            precio: articulo.precio,
         }
 
         setArticulosCesta((previusState)=>[...previusState,articuloCesta]);
@@ -23,12 +32,13 @@ export default function Articulos({articulosDisponibles, filterText, setArticulo
                 <tr>
                     <td>Nombre</td>
                     <td>Precio</td>
+                    <td>Unidades</td>
                     <td>Accion</td>
                 </tr>
                 </thead>
 
                 <tbody>
-                    {articulosDisponibles.filter(element=> element.nombre.toLowerCase().includes(filterText.toLowerCase())).map((element,index)=>
+                    {articulosDisponibles.map((element,index)=>
                         <tr key={index}>
                             <td>{element.nombre}</td>
                             <td>{element.precio}</td>
